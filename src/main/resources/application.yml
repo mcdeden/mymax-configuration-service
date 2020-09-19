@@ -1,0 +1,35 @@
+# TOMCAT
+server:
+  port: 8888
+
+# SPRING CONFIG
+spring:
+
+  # APPLICATION NAME
+  application:
+    name: configuration
+  
+  # SPRING PROFILE
+  profiles:
+    active: native
+    
+  # SPRING CONFIG REPO
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:/config
+
+logging:
+  file: classpath:/log/configuration.log
+          
+# ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - env
+          

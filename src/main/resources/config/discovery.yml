@@ -1,0 +1,37 @@
+## TOMCAT
+server:
+  port: 8787
+
+## EUREKA DISCOVERY
+eureka:
+  server:
+    peer-node-read-timeout-ms: 10000
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVER_NAME:localhost}:${DISCOVERY_SERVER_PORT:8787}/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+
+# LOGGING
+#logging:
+#  file: /home/mcdeden/dlvol/logs/discovery.log
+  #pattern:
+    #console: "%d %-5level %logger : %msg%n"
+    #file: "%d %-5level [%thread] %logger : %msg%n"
+  #level:
+    #com.aurora.core: DEBUG
+    #org.hibernate: ERROR
+        
+## ACTUATOR ENDPOINTS
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - env
+

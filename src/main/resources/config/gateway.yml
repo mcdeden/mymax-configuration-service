@@ -1,0 +1,71 @@
+# TOMCAT
+server:
+  port: 8443  
+
+# DISCOVERY
+eureka:
+  instance:
+    hostname: localhost
+    nonSecurePortEnabled: false
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVER_NAME:localhost}:${DISCOVERY_SERVER_PORT:8787}/eureka/
+
+# HYSTRIX
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 160000000
+
+# RIBBON
+ribbon:
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 5000000
+  ConnectTimeout: 5000000
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 3
+                         
+# ZUUL ROUTE
+zuul:
+  sslHostnameValidationEnabled: false
+  okhttp:
+    enabled: true
+  host:
+    connect-timeout-millis: 5000000
+    socket-timeout-millis: 5000000
+  prefix: /api
+  ignoredServices: '*'
+  routes:
+    prospecting:
+      path: /prospecting/**
+      serviceId: prospecting
+    progress:
+      path: /progress/**
+      service-id: progress
+    comment:
+      path: /comment/**
+      service-id: comment    
+  ratelimit:
+    enable: true
+    repository: jpa
+    policy-list:
+      submission:
+        - limit: 5
+          refresh-interval: 60
+          type:
+            - origin    
+            
+# ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - env

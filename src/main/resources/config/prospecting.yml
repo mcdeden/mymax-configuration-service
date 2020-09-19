@@ -1,0 +1,55 @@
+# TOMCAT
+server:
+  port: 8111
+
+# DISCOVERY
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVER_NAME:localhost}:${DISCOVERY_SERVER_PORT:8787}/eureka/
+
+# RABBITMQ & BINDING & DATABASE  
+spring:
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_SERVER:localhost}:3306/${MYSQL_DB_NAME:sardb}
+    username: ${MYSQL_USER:bybdbuser}
+    password: ${MYSQL_PWD:saudara123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimumIdle: 3
+      maximumPoolSize: 10
+      maxLifetime: 1800000
+    
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: validate
+
+# LOGGING
+#logging:
+#  file: /home/mcdeden/dlvol/logs/callback.log
+  #pattern:
+    #console: "%d %-5level %logger : %msg%n"
+    #file: "%d %-5level [%thread] %logger : %msg%n"
+  #level:
+    #com.aurora.core: DEBUG
+    #org.hibernate: ERROR
+          
+## ACTUATOR ENDPOINTS
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - env
